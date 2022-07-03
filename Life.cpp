@@ -153,13 +153,45 @@ void requ(char tab[30][30], int tab2[30][30])
     }
 }
 
+int loop_break(char tab[30][30], int add_o)
+{
+    add_o = 0;
+    for(int i=1; i<29; i++)
+    {
+        for(int j=1; j<29; j++)
+        {
+            if(tab[i][j] == 'o')
+            {
+                add_o++;
+            }
+        }
+    }
+    return add_o;
+}
+
+int tab_compare(char tab[30][30], char tab_b[30][30], int tab_add)
+{
+    tab_add =0;
+    for(int i=0; i<30; i++)
+    {
+        for(int j=0; j<30; j++)
+        {
+            if(tab[i][j] == tab_b[i][j])
+            {
+                tab_add++;
+            }
+        }
+    }
+    return tab_add;
+}
+
 //endfunction
 
 int main()
 {
-    char tab[30][30];
+    char tab[30][30], tab_b[30][30];
     int tab2[30][30];
-    int x, y, n, m, count_, count_o, sum, t=100;
+    int x, y, n, m, count_, count_o, sum, add_o, tab_add, t=100;
 
     clean();
     zone_prepare(tab);
@@ -167,6 +199,17 @@ int main()
     choice_point(tab, x, y, n, m);
     for(int i=0; i<t; i++)
     {
+        if(loop_break(tab, add_o) == 0)
+        {
+            cout << "Area is empty. Life ended in " << i << " steps.\n" << endl;
+            break;
+        }
+
+        if(tab_compare(tab, tab_b, tab_add) == loop_break(tab, add_o))
+        {
+            cout << "The simulation stuck or occur resonances. End in " << i+1 << " step.\n" << endl;
+            break;
+        }
         
         cout << "step " << i+1 << endl;
         step(tab, tab2, count_, count_o);
