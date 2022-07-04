@@ -11,33 +11,33 @@ using namespace std;
 
 //function
 
-void zone_prepare(char tab[30][30])
+void zone_prepare(char tab[50][50])
 {
-    for(int i=0; i<30; i++)
+    for(int i=0; i<50; i++)
     {
-        for(int j=0; j<30; j++)
+        for(int j=0; j<50; j++)
         {
             tab[i][j] = ' ';
         }
     }
 }
 
-void zone_prepare_int(int tab2[30][30])
+void zone_prepare_int(int tab2[50][50])
 {
-    for(int i=0; i<30; i++)
+    for(int i=0; i<50; i++)
     {
-        for(int j=0; j<30; j++)
+        for(int j=0; j<50; j++)
         {
             tab2[i][j] = 0;
         }
     }
 }
 
-void draw_tab(char tab[30][30])
+void draw_tab(char tab[50][50])
 {
-    for(int i=0; i<30; i++)
+    for(int i=0; i<50; i++)
     {
-        for(int j=0; j<30; j++)
+        for(int j=0; j<50; j++)
         {
             cout << tab[i][j] << " ";
         }
@@ -50,7 +50,7 @@ void clean()
     system("clear");
 }
 
-void choice_point(char tab[30][30], int x, int y, int n, int m)
+void choice_point(char tab[50][50], int x, int y, int n, int m)
 {
     // x - wsp. pionowa punktu
     // y - wsp. pozioma punktu
@@ -81,7 +81,7 @@ void sleep(int milisec)
     while(clock() < end) continue;
 }
 
-int counter_(char tab[30][30], int i, int j, int count_)
+int counter_(char tab[50][50], int i, int j, int count_)
 {
     count_ = 0;
     for(int p=0; p<3; p++)
@@ -97,7 +97,7 @@ int counter_(char tab[30][30], int i, int j, int count_)
     return count_;
 }
 
-int counter_o(char tab[30][30], int i, int j, int count_o)
+int counter_o(char tab[50][50], int i, int j, int count_o)
 {
     count_o = -1;
     for(int p=0; p<3; p++)
@@ -113,11 +113,11 @@ int counter_o(char tab[30][30], int i, int j, int count_o)
     return count_o;
 }
 
-void step(char tab[30][30], int tab2[30][30], int count_, int count_o)
+void step(char tab[50][50], int tab2[50][50], int count_, int count_o)
 {
-    for(int i=1; i<29; i++)
+    for(int i=1; i<49; i++)
     {
-        for(int j=1; j<29; j++)
+        for(int j=1; j<49; j++)
         {
             if(tab[i][j] == 'o')
             {
@@ -131,11 +131,11 @@ void step(char tab[30][30], int tab2[30][30], int count_, int count_o)
     }  
 } 
 
-void requ(char tab[30][30], int tab2[30][30])
+void requ(char tab[50][50], int tab2[50][50])
 {
-    for(int i=1; i<29; i++)
+    for(int i=1; i<49; i++)
     {
-        for(int j=1; j<29; j++)
+        for(int j=1; j<49; j++)
         {
             if(tab[i][j] == ' ' and (tab2[i][j] == 3 or tab2[i][j] == 6))
             {
@@ -153,12 +153,12 @@ void requ(char tab[30][30], int tab2[30][30])
     }
 }
 
-int loop_break(char tab[30][30], int add_o)
+int loop_break(char tab[50][50], int add_o)
 {
     add_o = 0;
-    for(int i=1; i<29; i++)
+    for(int i=1; i<49; i++)
     {
-        for(int j=1; j<29; j++)
+        for(int j=1; j<49; j++)
         {
             if(tab[i][j] == 'o')
             {
@@ -169,14 +169,14 @@ int loop_break(char tab[30][30], int add_o)
     return add_o;
 }
 
-int tab_compare(char tab[30][30], char tab_b[30][30], int tab_add)
+int tab_compare(char tab[50][50], char tab_b[50][50], int tab_add)
 {
-    tab_add =0;
-    for(int i=0; i<30; i++)
+    tab_add = 0;
+    for(int i=0; i<50; i++)
     {
-        for(int j=0; j<30; j++)
+        for(int j=0; j<50; j++)
         {
-            if(tab[i][j] == tab_b[i][j])
+            if(tab[i][j] == 'o' and tab_b[i][j] == 'o')
             {
                 tab_add++;
             }
@@ -185,35 +185,50 @@ int tab_compare(char tab[30][30], char tab_b[30][30], int tab_add)
     return tab_add;
 }
 
+void tab_equal(char tab[50][50], char tab_b[50][50])
+{
+    for(int i=0; i<50; i++)
+        {
+            for(int j=0; j<50; j++)
+            {
+                tab_b[i][j] = tab[i][j];
+            }
+        }
+} 
+
 //endfunction
 
 int main()
 {
-    char tab[30][30], tab_b[30][30];
-    int tab2[30][30];
+    char tab[50][50], tab_b[50][50];
+    int tab2[50][50];
     int x, y, n, m, count_, count_o, sum, add_o, tab_add, t=100;
 
     clean();
     zone_prepare(tab);
+    zone_prepare(tab_b);
     zone_prepare_int(tab2);
     choice_point(tab, x, y, n, m);
     for(int i=0; i<t; i++)
     {
-        if(loop_break(tab, add_o) == 0)
+        if(loop_break(tab, add_o) == 0 and i > 0)
         {
+            draw_tab(tab);
             cout << "Area is empty. Life ended in " << i << " steps.\n" << endl;
             break;
         }
 
         if(tab_compare(tab, tab_b, tab_add) == loop_break(tab, add_o))
         {
-            cout << "The simulation stuck or occur resonances. End in " << i+1 << " step.\n" << endl;
+            draw_tab(tab);
+            cout << "The simulation stuck. End in " << i+1 << " step.\n" << endl;
             break;
         }
         
         cout << "step " << i+1 << endl;
         step(tab, tab2, count_, count_o);
         requ(tab, tab2);
+        
         draw_tab(tab);
         sleep(250);
         clean(); 
